@@ -75,9 +75,15 @@ In this method happac agent checks are utilized along with backup routing by lev
 ```
 listen master
         bind 10.132.204.203:5000
-        acl is_pgb_alive nbsrv(master_pgbouncer) -m int gt 0
-        use_backend master_pgbouncer if is_pgb_alive
+        acl is_pgb_alive nbsrv(master_pgbouncer) -m int eq 1
+        acl is_happac_alive nbsrv(happac) -m int eq 3
+        use_backend master_pgbouncer if is_pgb_alive is_happac_alive
         use_backend master_patroni
+
+backend happac
+        server patroni-1-happac 10.132.200.201:5555 check
+        server patroni-2-happac 10.132.200.202:5555 check
+        server patroni-3-happac 10.132.200.203:5555 check
 
 backend master_pgbouncer
         option tcplog
