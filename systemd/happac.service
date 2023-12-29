@@ -1,0 +1,17 @@
+[Unit]
+Description=HAProxy agent check for Patroni/Pgbouncer status
+After=syslog.target network.target patroni.service pgbouncer.service
+
+[Service]
+Type=simple
+User=haproxy
+Group=haproxy
+StartLimitInterval=15
+EnvironmentFile=/etc/haproxy/happac.env
+ExecStart=/usr/local/bin/happac -h ${PATRONI_HOST} -p ${AGENT_PORT} -r ${PGISREADY_PORT} -x ${PGISREADY_PATH} -o ${PATRONI_API_PORT} -k ${PATRONI_ENDPOINT}
+KillMode=process
+TimeoutSec=30
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
