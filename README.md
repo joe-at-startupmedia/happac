@@ -64,9 +64,9 @@ In this method, happac agent checks are utilized in place of direct patroni `htt
 listen master
         bind 10.132.200.201:5000
         default-server inter 3s fastinter 1s fall 3 rise 4 on-marked-down shutdown-sessions
-        server startup-patroni-1-pgbouncer 10.132.200.201:6432 maxconn 100 check agent-check agent-addr 10.132.200.201 agent-port 5555 agent-inter 5s
-        server startup-patroni-2-pgbouncer 10.132.200.202:6432 maxconn 100 check agent-check agent-addr 10.132.200.202 agent-port 5555 agent-inter 5s
-        server startup-patroni-3-pgbouncer 10.132.200.203:6432 maxconn 100 check agent-check agent-addr 10.132.200.203 agent-port 5555 agent-inter 5s
+        server patroni-1-pgbouncer 10.132.200.201:6432 maxconn 100 check agent-check agent-addr 10.132.200.201 agent-port 5555 agent-inter 5s
+        server patroni-2-pgbouncer 10.132.200.202:6432 maxconn 100 check agent-check agent-addr 10.132.200.202 agent-port 5555 agent-inter 5s
+        server patroni-3-pgbouncer 10.132.200.203:6432 maxconn 100 check agent-check agent-addr 10.132.200.203 agent-port 5555 agent-inter 5s
 ```
 
 ### Scenario C
@@ -82,9 +82,9 @@ listen master
 backend master_pgbouncer
         option tcplog
         default-server inter 3s fastinter 1s fall 3 rise 4 on-marked-down shutdown-sessions
-        server startup-patroni-1-pgbouncer 10.132.200.201:6432 maxconn 100 check agent-check agent-addr 10.132.200.201 agent-port 5555 agent-inter 5s
-        server startup-patroni-2-pgbouncer 10.132.200.202:6432 maxconn 100 check agent-check agent-addr 10.132.200.202 agent-port 5555 agent-inter 5s
-        server startup-patroni-3-pgbouncer 10.132.200.203:6432 maxconn 100 check agent-check agent-addr 10.132.200.203 agent-port 5555 agent-inter 5s
+        server patroni-1-pgbouncer 10.132.200.201:6432 maxconn 100 check agent-check agent-addr 10.132.200.201 agent-port 5555 agent-inter 5s
+        server patroni-2-pgbouncer 10.132.200.202:6432 maxconn 100 check agent-check agent-addr 10.132.200.202 agent-port 5555 agent-inter 5s
+        server patroni-3-pgbouncer 10.132.200.203:6432 maxconn 100 check agent-check agent-addr 10.132.200.203 agent-port 5555 agent-inter 5s
 
 backend master_patroni
         option httpchk OPTIONS /primary
@@ -97,4 +97,3 @@ backend master_patroni
 
 ## Practicality
 The argument can be made that the configuration overhead outweighs the benefit of accounting for such a statistically insignificant scenario: the pgbouncer service becoming unavailable on a master node. 
-
