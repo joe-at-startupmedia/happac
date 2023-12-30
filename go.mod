@@ -1,4 +1,4 @@
-module github.com/joe-at-startupmedia/haproxy-agent-checker-patroni-pgbouncer
+module github.com/joe-at-startupmedia/happac
 
 go 1.20
 
