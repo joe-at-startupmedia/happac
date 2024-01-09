@@ -8,11 +8,11 @@ In cases where you have Patroni, PgBouncer and HAProxy installed on the same mac
 
 ## Installation
 ```bash
-make
-make intall
+make build
+make install
 sudo cp ./bin/happac /usr/local/bin/
-sudo wget https://raw.githubusercontent.com/joe-at-startupmedia/haproxy-agent-checker-patroni-pgbouncer/master/systemd/happac.service -P /usr/lib/systemd/system/
-sudo wget https://raw.githubusercontent.com/joe-at-startupmedia/haproxy-agent-checker-patroni-pgbouncer/master/systemd/happac.env -P /etc/haproxy/
+sudo wget https://raw.githubusercontent.com/joe-at-startupmedia/happac/master/systemd/happac.service -P /usr/lib/systemd/system/
+sudo wget https://raw.githubusercontent.com/joe-at-startupmedia/happac/master/systemd/happac.env -P /etc/haproxy/
 #Modify /etc/haproxy/happac.env variable specifc to your needs
 systemctl enable happac
 systemctl start happac
