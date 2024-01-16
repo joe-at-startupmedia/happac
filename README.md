@@ -108,5 +108,44 @@ backend master_patroni
         server patroni-3-pgbouncer 10.132.200.203:5432 maxconn 100 check port 8008
 ```
 
+## Consul Integration
+Now that we're relying on happac to ensure the availability of our primary patroni node, we can also utilize consul to register services for our primary (and replica) based on the response of happac. Traditionally we would also use our patroni healthcheck endpoint but now we can use happac.
+
+### services.hcl
+
+```hcl
+ services {
+  id = "patroni-primary"
+  name = "patroni-primary"
+  tags = [
+    "primary"
+  ]
+  address = "0.0.0.0"
+  port = 5000
+  checks = [
+    {
+      args = ["/etc/consul.d/scripts/happac_healthcheck.bash", "0.0.0.0", "5555"]
+      interval = "5s"
+      timeout = "20s"
+    }
+  ]
+}
+```
+
+### happac_healthcheck.bash
+
+```hcl
+#!/usr/bin/env bash
+HOST=$1
+PORT=$2
+/usr/bin/nc "$HOST" "$PORT" --recv-only | grep -q up
+if [ $? -ne 0 ];
+then
+  exit 2
+fi
+```
+
+See [consul](https://github.com/joe-at-startupmedia/happac/tree/master/consul) for a complete example with replica service registration
+
 ## Practicality
 The argument can be made that the configuration overhead outweighs the benefit of accounting for such a statistically insignificant scenario: the pgbouncer service becoming unavailable on a master node. 
