@@ -101,9 +101,9 @@ backend master_patroni
         option httpchk OPTIONS /primary
         http-check expect status 200
         default-server inter 3s fastinter 1s fall 3 rise 4 on-marked-down shutdown-sessions
-        server patroni-1-pgbouncer 10.132.200.201:6432 maxconn 100 check port 8008
-        server patroni-2-pgbouncer 10.132.200.202:6432 maxconn 100 check port 8008
-        server patroni-3-pgbouncer 10.132.200.203:6432 maxconn 100 check port 8008
+        server patroni-1-pgbouncer 10.132.200.201:5432 maxconn 100 check port 8008
+        server patroni-2-pgbouncer 10.132.200.202:5432 maxconn 100 check port 8008
+        server patroni-3-pgbouncer 10.132.200.203:5432 maxconn 100 check port 8008
 ```
 
 ## Practicality
