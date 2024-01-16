@@ -26,6 +26,8 @@ wget -O - https://raw.githubusercontent.com/joe-at-startupmedia/happac/master/re
 ## Debugging
 ```bash
 journalctl -u happac -f &
+nc 0.0.0.0 5555 --recv-only
+#You can also use curl for communicating with TCP connection but you might have to specify the 0.9 flag
 curl -iL --http0.9 "http://0.0.0.0:5555"
 ```
 
