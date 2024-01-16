@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"syscall"
 
-	"github.com/firstrow/tcp_server"
+	"github.com/joe-at-startupmedia/tcp_server"
 	"github.com/pborman/getopt/v2"
 )
 
@@ -40,18 +40,19 @@ func main() {
 
 	server.OnNewClient(func(c *tcp_server.Client) {
 		fmt.Println("HAProxy connected to health check agent")
+		defer func() {
+			c.Close()
+		}()
 
 		statusCode, err := patroniPrimaryStatusCode(&execFlags)
 		if err != nil {
 			fmt.Println(err)
-			c.Close()
 			return
 		}
 
 		exitCode, err := checkPgisready(&execFlags)
 		if err != nil {
 			fmt.Println(err)
-			c.Close()
 			return
 		}
 
@@ -60,8 +61,6 @@ func main() {
 		} else {
 			c.Send("down\n")
 		}
-
-		c.Close()
 	})
 
 	server.Listen()

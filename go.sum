@@ -1,4 +1,4 @@
-github.com/firstrow/tcp_server v0.1.0 h1:SeaKjoPUqSgwb8NLbXtcWEQS1H+QZ2hwPBBLd1TnGo4=
-github.com/firstrow/tcp_server v0.1.0/go.mod h1:Yw3e670k1AHRzhd+WrOEvXLCMh5NDH01Kc/o0QR1GVQ=
+github.com/joe-at-startupmedia/tcp_server v0.0.1 h1:LTOMm+92TtkY7NPKOt3xAdfvN7u4dhXYRwCEjZcIl2s=
+github.com/joe-at-startupmedia/tcp_server v0.0.1/go.mod h1:8lsODuCciB8WJ2AMigATVR6AXz2MMnTcLT9n7k+nq7g=
 github.com/pborman/getopt/v2 v2.1.0 h1:eNfR+r+dWLdWmV8g5OlpyrTYHkhVNxHBdN2cCrJmOEA=
 github.com/pborman/getopt/v2 v2.1.0/go.mod h1:4NtW75ny4eBw9fO1bhtNdYTlZKYX5/tBLtsOpwKIKd0=
