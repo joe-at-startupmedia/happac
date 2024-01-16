@@ -20,7 +20,7 @@ sudo systemctl start happac
 ### Using Release Installer
 
 ```bash
-wget -O - https://raw.githubusercontent.com/joe-at-startupmedia/happac/master/release-installer.bash | bash -s 0.0.1
+wget -O - https://raw.githubusercontent.com/joe-at-startupmedia/happac/master/release-installer.bash | bash -s 0.0.2
 ```
 
 ## Debugging
