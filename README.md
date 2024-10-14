@@ -1,4 +1,6 @@
-# happac: (HA)Proxy (P)atroni (P)GBouncer (A)gent (C)hecker
+# happac: 
+
+happac stands for (HA)Proxy (P)atroni (P)GBouncer (A)gent (C)hecker. Have a better name for it? open an issue.
 
 ## Purpose
 In cases where you have Patroni, PgBouncer and HAProxy installed on the same machine, the HAProxy healthchecks require the capability of detecting:
@@ -12,7 +14,7 @@ make build
 sudo make install
 sudo wget https://raw.githubusercontent.com/joe-at-startupmedia/happac/master/systemd/happac.service -P /usr/lib/systemd/system/
 sudo wget https://raw.githubusercontent.com/joe-at-startupmedia/happac/master/systemd/happac.env -P /etc/haproxy/
-#Modify /etc/haproxy/happac.env variable specifc to your needs
+#Modify /etc/haproxy/happac.env variable specific to your needs
 sudo systemctl enable happac
 sudo systemctl start happac
 ```
@@ -43,9 +45,9 @@ Usage: happac [-h value] [-k value] [-o value] [-p value] [-r value] [-x value] 
  -o, --patroni-port=value
                    Port of the patroni REST API server. Default: [8008]
  -p, --port=value  port to use for this agent Default: [5555]
- -r, --pgisready-port=value
+ -r, --pg-is-ready-port=value
                    The port to check using pg_isready (required)
- -x, --pgisready-path=value
+ -x, --pg-is-ready-path=value
                    path of where the pg_isready executable resides
 ```
 
@@ -66,7 +68,7 @@ listen master
 ```
 
 ### Scenario B
-In this method, happac agent checks are utilized in place of direct patroni `httpchk` healthchecks. Unlike Scenario A, when PGBouncer goes down on the patroni primary, all primary node connections in HAProxy would become unavalilable. Communication between haproxy and patroni would still be disrupted resulting in failing read/write queries on port 5000. 
+In this method, happac agent checks are utilized in place of direct patroni `httpchk` healthchecks. Unlike Scenario A, when PGBouncer goes down on the patroni primary, all primary node connections in HAProxy would become unavailable. Communication between haproxy and patroni would still be disrupted resulting in failing read/write queries on port 5000. 
 ```
 listen master
         bind 10.132.200.201:5000

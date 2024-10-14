@@ -6,7 +6,7 @@ all: build
 
 build:
 	$(GO) mod tidy
-	$(GO) build -o bin/happac happac.go
+	$(GO) build -o bin/happac main.go
 
 install:
 	cp bin/happac /usr/local/bin/happac

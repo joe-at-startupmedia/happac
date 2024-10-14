@@ -14,11 +14,11 @@ import (
 
 type ExecFlags struct {
 	PatroniHost                string
-	PatroniPort                string
+	PatroniPort                string `default:8008`
 	PatroniHealthcheckEndpoint string
 	AgentPort                  string
-	PgisreadyPort              string
-	PgisreadyPath              string
+	PgIsReadyPort              string
+	PgIsReadyPath              string
 }
 
 func main() {
@@ -32,25 +32,24 @@ func main() {
 	getopt.FlagLong(&execFlags.PatroniPort, "patroni-port", 'o', "Port of the patroni REST API server. Default:")
 	getopt.FlagLong(&execFlags.PatroniHealthcheckEndpoint, "patroni-healthcheck", 'k', "Health check endpoint to use. Default:")
 	getopt.FlagLong(&execFlags.AgentPort, "port", 'p', "port to use for this agent").Mandatory()
-	getopt.FlagLong(&execFlags.PgisreadyPort, "pgisready-port", 'r', "The port to check using pg_isready").Mandatory()
-	getopt.FlagLong(&execFlags.PgisreadyPath, "pgisready-path", 'x', "path of where the pg_isready executable resides")
+	getopt.FlagLong(&execFlags.PgIsReadyPort, "pg-is-ready-port", 'r', "The port to check using pg_isready").Mandatory()
+	getopt.FlagLong(&execFlags.PgIsReadyPath, "pg-is-ready-path", 'x', "path of where the pg_isready executable resides")
 	getopt.Parse()
 
 	server := tcp_server.New(":" + execFlags.AgentPort)
 
 	server.OnNewClient(func(c *tcp_server.Client) {
-		fmt.Println("HAProxy connected to health check agent")
-		defer func() {
-			c.Close()
-		}()
+		defer c.Close()
 
-		statusCode, err := patroniPrimaryStatusCode(&execFlags)
+		fmt.Println("HAProxy connected to health check agent")
+
+		statusCode, err := execFlags.patroniPrimaryStatusCode()
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		exitCode, err := checkPgisready(&execFlags)
+		exitCode, err := execFlags.checkPgIsReady()
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -66,10 +65,10 @@ func main() {
 	server.Listen()
 }
 
-func checkPgisready(execFlags *ExecFlags) (int, error) {
+func (execFlags *ExecFlags) checkPgIsReady() (int, error) {
 
 	var outbuf, errbuf bytes.Buffer
-	cmd := exec.Command(execFlags.PgisreadyPath+"pg_isready", "-h", execFlags.PatroniHost, "-p", execFlags.PgisreadyPort)
+	cmd := exec.Command(execFlags.PgIsReadyPath+"pg_isready", "-h", execFlags.PatroniHost, "-p", execFlags.PgIsReadyPort)
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
 	err := cmd.Run()
@@ -95,10 +94,10 @@ func checkPgisready(execFlags *ExecFlags) (int, error) {
 	}
 	log.Printf("command result, stdout: %v, stderr: %v", stdout, stderr)
 
-	return 0, fmt.Errorf("Encountered an unexpected error when executing pg_isready")
+	return 0, fmt.Errorf("encountered an unexpected error when executing pg_isready")
 }
 
-func patroniPrimaryStatusCode(execFlags *ExecFlags) (int, error) {
+func (execFlags *ExecFlags) patroniPrimaryStatusCode() (int, error) {
 	req, err := http.NewRequest("GET", "http://"+execFlags.PatroniHost+":"+execFlags.PatroniPort+"/"+execFlags.PatroniHealthcheckEndpoint, nil)
 	if err != nil {
 		return 0, err
