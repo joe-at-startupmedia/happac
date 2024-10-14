@@ -29,7 +29,6 @@ download_from_project() {
 }
 
 systemd_install() {
-  WHOAMI=$(whoami)
   sudo cp -R bin/happac /usr/local/bin/
   sudo cp "systemd/happac.service" /usr/lib/systemd/system/
   sudo cp "systemd/happac.env" /etc/haproxy/
